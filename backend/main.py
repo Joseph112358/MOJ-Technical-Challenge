@@ -46,7 +46,14 @@ def create_case():
     due_date = data.get("due_date")
 
     db = get_db()
-    return { "data": data}, 201
+
+    db.execute(
+        "INSERT INTO cases (title, description, status, due_date) VALUES (?, ?, ?, ?)",
+        (title, description, status, due_date)
+    )
+    db.commit()
+
+    return {"message": "Case created successfully"}, 201
 
 @app.route("/")
 def index():
