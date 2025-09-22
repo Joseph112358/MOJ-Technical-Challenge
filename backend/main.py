@@ -79,6 +79,25 @@ def update_status():
 
     return {"message": "Case updated successfully"}, 201
 
+@app.route("/api/delete_case", methods=["POST"])
+def delete_case():
+    data = request.json
+    id = data.get("id")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+          "DELETE FROM cases WHERE id = ?",
+        (id,)
+    )
+    db.commit()
+
+    
+
+    return jsonify({"message": "Case  deleted successfully"}), 200
+
+
 @app.route("/")
 def index():
     return "Backend is running"
