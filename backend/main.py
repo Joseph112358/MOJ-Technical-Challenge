@@ -35,6 +35,12 @@ def init_db():
     """)
     db.commit()
 
+# Helper function for reliability
+def check_if_case_exists():
+    db = get_db()
+    cursor = db.execute("SELECT 1 FROM cases WHERE title = ? LIMIT 1", (title,))
+    return cursor.fetchone() is not None
+
 # API entry points
 
 @app.route("/api/create_case", methods=["POST"])
@@ -54,6 +60,24 @@ def create_case():
     db.commit()
 
     return {"message": "Case created successfully"}, 201
+
+# Maybe this should pass in the title instead?
+@app.route("/api/update_status", methods=["POST"])
+def update_status():
+    data = request.json
+    id = data.get("id")
+    new_status = data.get("status")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "UPDATE cases SET status = ? WHERE id = ?",
+        (new_status, id)
+    )
+    db.commit()
+
+    return {"message": "Case updated successfully"}, 201
 
 @app.route("/")
 def index():
