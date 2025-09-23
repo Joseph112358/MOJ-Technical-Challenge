@@ -1,2 +1,9 @@
+
+# Backend 
 backend/venv/
 backend/case_database.db
+
+# Frontend react based modules
+frontend/node_modules/
+
+
