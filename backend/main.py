@@ -43,6 +43,17 @@ def check_if_case_exists():
 
 # API entry points
 
+@app.route("/api/get_cases", methods=["GET"])
+def get_cases():
+    db = get_db()
+    cursor = db.execute("SELECT * FROM cases")
+    rows = cursor.fetchall()
+
+    # Convert rows to list of dicts so is more easily formatable in JSON
+    cases = [dict(row) for row in rows]
+
+    return jsonify(cases)
+
 @app.route("/api/create_case", methods=["POST"])
 def create_case():
     data = request.get_json()
