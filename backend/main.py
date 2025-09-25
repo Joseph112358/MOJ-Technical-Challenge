@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify, g
+from flask_cors import CORS
 import sqlite3
 
 DATABASE = "case_database.db"
 
 app = Flask(__name__)
+CORS(app)
 
 
 # Database helper functions
