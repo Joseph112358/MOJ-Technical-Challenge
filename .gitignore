@@ -2,8 +2,12 @@
 # Backend 
 backend/venv/
 backend/case_database.db
+backend/__pycache__/
 
 # Frontend react based modules
 frontend/node_modules/
+
+# Testing
+tests/__pycache__/
 
 
