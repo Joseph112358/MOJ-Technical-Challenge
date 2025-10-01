@@ -92,21 +92,12 @@ def update_status():
 
     return {"message": "Case updated successfully"}, 201
 
-@app.route("/api/delete_case", methods=["POST"])
-def delete_case():
-    data = request.json
-    id = data.get("id")
-
+@app.route("/api/delete_case/<int:case_id>", methods=["DELETE"])
+def delete_case(case_id):
     db = get_db()
     cursor = db.cursor()
-
-    cursor.execute(
-          "DELETE FROM cases WHERE id = ?",
-        (id,)
-    )
+    cursor.execute("DELETE FROM cases WHERE id = ?", (case_id,))
     db.commit()
-
-    
 
     return jsonify({"message": "Case  deleted successfully"}), 200
 

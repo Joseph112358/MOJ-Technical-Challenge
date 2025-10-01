@@ -41,6 +41,21 @@ function App() {
     fetchCases();
   };
 
+   // Delete a case
+   const deleteCase = async (id) => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/delete_case/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete case");
+
+      // Update frontend list without reloading all cases
+      setCases(cases.filter((c) => c.id !== id));
+    } catch (err) {
+      setError("Failed to delete case.");
+    }
+  };
+
   useEffect(() => {
     fetchCases();
   }, []);
@@ -80,7 +95,13 @@ function App() {
         <ul>
           {cases.map((c) => (
             <li key={c.id} style={{ marginBottom: "10px" }}>
-              <b>{c.title}</b>, status:  {c.status}
+              <b>{c.title}</b>, status:  {c.status}{" "}
+              <button
+                style={{ marginLeft: "10px", color: "red" }}
+                onClick={() => deleteCase(c.id)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
