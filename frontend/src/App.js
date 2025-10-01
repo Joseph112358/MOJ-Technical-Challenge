@@ -5,12 +5,22 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("open");
+  const [error, setError] = useState(null);
 
 
   const fetchCases = async () => {
-    const res = await fetch("http://127.0.0.1:8000/api/get_cases");
+    try{
+      const res = await fetch("http://127.0.0.1:8000/api/get_cases");
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
     const data = await res.json();
     setCases(data);
+    } catch (error){
+      console.error("Failed to fetch cases:", error);
+      setError("Could not connect to the backend for some reason");
+    }
   };
 
   const submitCase = async (e) => {
@@ -75,6 +85,8 @@ function App() {
           ))}
         </ul>
       )}
+  {/* In the case where the backend could not be reached*/}
+    {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
