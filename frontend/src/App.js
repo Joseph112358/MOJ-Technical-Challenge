@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 function App() {
   const [cases, setCases] = useState([]);
 
+
+  const fetchCases = async () => {
+    const res = await fetch("http://127.0.0.1:8000/api/get_cases");
+    const data = await res.json();
+    setCases(data);
+  };
+
   useEffect(() => {
-    // TODO: Replace with environement variables to allow seamless transition to prod
-    fetch("http://127.0.0.1:8000/api/get_cases")
-      .then((res) => res.json())
-      .then((data) => setCases(data));
+    fetchCases();
   }, []);
 
   return (
