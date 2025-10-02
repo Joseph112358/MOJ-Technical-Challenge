@@ -56,6 +56,26 @@ def get_cases():
 
     return jsonify(cases)
 
+@app.route("/api/get_case/<int:case_id>", methods=["GET"])
+def get_case(case_id):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, title, description, status, due_date FROM cases WHERE id = ?", (case_id,))
+    row = cursor.fetchone()
+
+    if row is None:
+        return jsonify({"message": "Case not found"}), 404
+
+    case = {
+        "id": row[0],
+        "title": row[1],
+        "description": row[2],
+        "status": row[3],
+        "due_date": row[4],
+    }
+
+    return jsonify(case), 200
+
 @app.route("/api/create_case", methods=["POST"])
 def create_case():
     data = request.get_json()

@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+
+import CasePage from "./CasePage";
 
 function App() {
   const [cases, setCases] = useState([]);
@@ -61,55 +65,73 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1>Case Manager</h1>
+    <Router>
+      <Routes>
+        {/* Main case list and form */}
+        <Route
+          path="/"
+          element={
+            <div>
+              <h1>Case Manager</h1>
 
-      <p> Create a new case</p>
+              <p>Create a new case</p>
+              <form onSubmit={submitCase} style={{ marginBottom: "20px" }}>
+                <input
+                  type="text"
+                  placeholder="Case title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="open">Open</option>
+                  <option value="closed">Closed</option>
+                </select>
+                <button type="submit">Add Case</button>
+              </form>
 
-      <form onSubmit={submitCase} style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          placeholder="Case title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
+              <p>Your current cases</p>
+              {cases.length === 0 ? (
+                <p>No cases found.</p>
+              ) : (
+                <ul>
+                  {cases.map((c) => (
+                    <li key={c.id} style={{ marginBottom: "10px" }}>
+                      <b>{c.title}</b>, status: {c.status}{" "}
+                      <Link to={`/cases/${c.id}`} style={{ marginLeft: "10px" }}>
+                        View Case
+                      </Link>
+                      <button
+                        style={{ marginLeft: "10px", color: "red" }}
+                        onClick={() => deleteCase(c.id)}
+                      >
+                        Delete
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {error && <p style={{ color: "red" }}>{error}</p>}
+            </div>
+          }
         />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="open">Open</option>
-          <option value="closed">Closed</option>
-        </select>
-        <button type="submit">Add Case</button>
-      </form>
 
-
-      <p> Your current cases</p>
-      {cases.length === 0 ? (
-        <p>No cases found.</p>
-      ) : (
-        <ul>
-          {cases.map((c) => (
-            <li key={c.id} style={{ marginBottom: "10px" }}>
-              <b>{c.title}</b>, status:  {c.status}{" "}
-              <button
-                style={{ marginLeft: "10px", color: "red" }}
-                onClick={() => deleteCase(c.id)}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-  {/* In the case where the backend could not be reached*/}
-    {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+        {/* Single case page */}
+        <Route path="/cases/:id" element={<CasePage />} />
+      </Routes>
+    </Router>
   );
+  
 }
 
 export default App;
