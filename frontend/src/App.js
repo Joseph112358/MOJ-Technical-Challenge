@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import govUkLogo from "./assets/images/gov_uk_logo.PNG"; 
 import Banner from "./components/Banner";
+import { API_URL } from "./config";
 
 
 import CasePage from "./CasePage";
 
 function App() {
+
   const [cases, setCases] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -16,8 +17,7 @@ function App() {
 
   const fetchCases = async () => {
     try{
-      const res = await fetch("http://127.0.0.1:8000/api/get_cases");
-
+      const res = await fetch(`${API_URL}/get_cases`);
       if (!res.ok) {
         throw new Error(`Server error: ${res.status}`);
       }
@@ -31,8 +31,7 @@ function App() {
 
   const submitCase = async (e) => {
     e.preventDefault();
-
-    await fetch("http://127.0.0.1:8000/api/create_case", {
+    await fetch(`${API_URL}/create_case`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, description, status }),
@@ -50,7 +49,7 @@ function App() {
    // Delete a case
    const deleteCase = async (id) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/delete_case/${id}`, {
+      const res = await fetch(`${API_URL}/delete_case/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to delete case");

@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Banner from "./components/Banner";
+import { API_URL } from "./config";
 
 export default function CasePage() {
     const { id } = useParams();
     const [caseData, setCaseData] = useState(null);
   
     useEffect(() => {
-      fetch(`http://127.0.0.1:8000/api/get_case/${id}`)
+      fetch(`${API_URL}/get_case/${id}`)
         .then((res) => res.json())
         .then((data) => setCaseData(data));
     }, [id]);
