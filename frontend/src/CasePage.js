@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import Banner from "./components/Banner";
 
 export default function CasePage() {
     const { id } = useParams();
@@ -14,15 +15,18 @@ export default function CasePage() {
     if (!caseData) return <p>Loading case...</p>;
   
     return (
-      <div style={{ padding: "20px" }}>
-        <h2>{caseData.title}</h2>
-        <p><b>Status:</b> {caseData.status}</p>
-        <p><b>Description:</b> {caseData.description}</p>
-        <p><b>Date:</b> {caseData.due_date}</p>
-  
-        <Link to="/">
-          <button>← Back to Cases</button>
-        </Link>
+
+      <div>
+      <Banner />
+        <div style={{ padding: "20px" }}>
+          <h2>{caseData.title}</h2>
+          <p><b>Status:</b> {caseData.status}</p>
+          <p><b>Description:</b> {caseData.description}</p>
+          <p><b>Date:</b> {caseData.due_date}</p>
+          <Link to="/">
+            <button>← Back to Cases</button>
+          </Link>
+        </div>
       </div>
     );
   }
