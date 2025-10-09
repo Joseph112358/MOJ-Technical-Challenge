@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import govUkLogo from "./assets/images/gov_uk_logo.PNG"; 
 
 
 import CasePage from "./CasePage";
@@ -71,7 +72,23 @@ function App() {
         <Route
           path="/"
           element={
+            // TODO: Format indentation
             <div>
+  <div
+      style={{
+        width: "100%",
+        backgroundColor: "#1D70B8",
+        display: "flex",
+        justifyContent: "right",
+        padding: "8px 0"
+      }}
+    >
+      <img
+        src={govUkLogo}
+        alt="Government logo banner"
+      />
+    </div>
+
               <h1>Case Manager</h1>
 
               <p>Create a new case</p>
